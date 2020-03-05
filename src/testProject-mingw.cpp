@@ -13,23 +13,27 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	cout << "!!!Hello World SDL!!!" << endl; // prints !!!Hello World!!!
 
-    // Start SDL2
-    SDL_Init(SDL_INIT_EVERYTHING);
+	const int screenWidth = 640;
+	const int screenHeight = 480;
 
-    // Create a Window in the middle of the screen
-    SDL_Window *window = 0;
+	SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED,
+	SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
+	SDL_Surface* image = SDL_LoadBMP("C:/Users/Adrian/eclipse-workspace/testProject-mingw/tree.bmp");
+	SDL_Renderer* render = SDL_CreateRenderer(window, -1, 0);
+	SDL_Texture* texture1 = SDL_CreateTextureFromSurface(render, image);
 
-    window = SDL_CreateWindow("Hello World!",
-                              SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED,
-                              640, 480,
-                              SDL_WINDOW_SHOWN);
+	SDL_RenderCopy(render, texture1, NULL, NULL);
+	SDL_RenderPresent(render);
 
-    // Delay so that we can see the window appear
-    SDL_Delay(2000);
+	SDL_UpdateWindowSurface(window);
 
-    // Cleanup and Quit
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+	SDL_Delay(5000);
+
+	SDL_DestroyTexture(texture1);
+	SDL_DestroyRenderer(render);
+	SDL_FreeSurface(image);
+	SDL_DestroyWindow(window);
+
+	SDL_Quit();
 	return 0;
 }
